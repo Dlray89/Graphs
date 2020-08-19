@@ -1,3 +1,4 @@
+import collections
 """
 Simple graph implementation
 """
@@ -8,31 +9,60 @@ class Graph:
     """Represent a graph as a dictionary of vertices mapping labels to edges."""
     def __init__(self):
         self.vertices = {}
+        
 
     def add_vertex(self, vertex_id):
         """
         Add a vertex to the graph.
         """
+        if vertex_id not in self.vertices:
+            self.vertices[vertex_id] = set()
         pass  # TODO
 
     def add_edge(self, v1, v2):
+        if v1 in self.vertices and v2 in self.vertices:
+            self.vertices[v1].add(v2)
+
         """
         Add a directed edge to the graph.
         """
         pass  # TODO
 
+
+    
+
     def get_neighbors(self, vertex_id):
+        return self.vertices[vertex_id]
         """
         Get all neighbors (edges) of a vertex.
         """
         pass  # TODO
+
 
     def bft(self, starting_vertex):
         """
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        # set up a set object and queue
+        visited, queue = set(), collections.deque([starting_vertex])
+        # add queue to the set list
+        visited.add(starting_vertex)
+
+        # run a loop in the queue
+        while queue:
+            # Dequeue a vertext from the queue
+            vertext = queue.popleft()
+            print(str(vertext) + " -->", end=' ')
+            # if not visited, mar it as visited and enqueue it
+            for neighbor in self.vertices[vertext]:
+                if neighbor not in visited:
+                    # add neighbor to visited list
+                    visited.add(neighbor)
+                    queue.append(neighbor)
+      
+        
+
 
     def dft(self, starting_vertex):
         """
@@ -74,7 +104,17 @@ class Graph:
 
         This should be done using recursion.
         """
-        pass  # TODO
+        visited = set()
+        if visited is None:
+            visited.add(starting_vertex)
+        
+
+        print(starting_vertex)
+
+        for next in destination_vertex[starting_vertex] - visited:
+            self.dfs_recursive(self.vertices, next)
+        return visited
+        
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
